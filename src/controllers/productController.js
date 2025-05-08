@@ -25,4 +25,13 @@ rota.post("/", async (request,response)=>{
     return response.status(201).send({"message":"Produto cadastrado com sucesso!"})
 })
 
+rota.get("/", async (request, response) => {
+    try {
+        const produtos = await productService.listarProdutos();
+        return response.status(200).json(produtos);
+    } catch (error) {
+        return response.status(500).send({ message: "Erro ao listar os produtos." });
+    }
+});
+
 export default rota

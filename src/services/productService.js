@@ -8,4 +8,15 @@ async function cadastrarProduto(nome,descricao,categoria,preco) {
     conexao.end();
 }
 
-export default {cadastrarProduto}
+async function listarProdutos() {
+    const sql = "SELECT * FROM produtos";
+    const conexao = await bancodados.connectDB();
+    const [linhas] = await conexao.query(sql);
+    conexao.end();
+    return linhas;
+}
+
+export default {
+    cadastrarProduto,
+    listarProdutos 
+};
