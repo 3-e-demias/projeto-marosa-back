@@ -34,4 +34,5 @@ rota.get("/", async (request, response) => {
     }
 });
 
+
 export default rota

@@ -16,7 +16,17 @@ async function listarProdutos() {
     return linhas;
 }
 
+async function listarProduto(cod_prod) {
+    const sql = "SELECT * FROM produtos WHERE id = ?";
+    const infoProd = [cod_prod];
+    const conexao = await bancodados.connectDB();
+    const [linhas] = await conexao.query(sql,infoProd);
+    conexao.end();
+    return linhas;
+}
+
 export default {
     cadastrarProduto,
-    listarProdutos 
+    listarProdutos,
+    listarProduto
 };
