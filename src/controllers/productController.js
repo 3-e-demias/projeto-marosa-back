@@ -45,4 +45,22 @@ rota.get("/listagemCategorias", async (request, response) => {
     }
 });
 
+// VERIFICAR DEPOIS
+rota.delete("/:id", async (request, response) => {
+  const { id } = request.params;
+
+  if (!id) {
+    return response.status(400).send({ message: "ID do produto é obrigatório para exclusão." });
+  }
+
+  try {
+    await productService.deletarProduto(id);
+    return response.status(200).send({ message: "Produto excluído com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao excluir produto:", error);
+    return response.status(500).send({ message: "Erro ao excluir o produto." });
+  }
+});
+
+
 export default rota

@@ -17,13 +17,19 @@ async function listarProdutos() {
 }
 
 async function listarProduto(cod_prod) {
-    const sql = "SELECT * FROM produtos WHERE id = ?";
+    const sql = `
+      SELECT p.*, c.nome AS nome_categoria
+      FROM produtos p
+      LEFT JOIN categorias c ON p.categoria_produto = c.id
+      WHERE p.id = ?`;
+    
     const infoProd = [cod_prod];
     const conexao = await bancodados.connectDB();
-    const [linhas] = await conexao.query(sql,infoProd);
+    const [linhas] = await conexao.query(sql, infoProd);
     conexao.end();
     return linhas;
 }
+
 
 async function  atualizarProduto(nome_produto,descricao,categoria_produto,preco,cod_prod) {
     const sql = "UPDATE produtos SET nome_produto = ?, descricao = ?, categoria_produto = ?, preco = ? WHERE id = ?"
@@ -41,10 +47,18 @@ async function listagemCategorias() {
     return linhas;
 }
 
+async function deletarProduto(cod_prod) {
+    const sql = "DELETE FROM produtos WHERE id = ?";
+    const conexao = await bancodados.connectDB();
+    await conexao.query(sql, [cod_prod]);
+    conexao.end();
+}
+
 export default {
     cadastrarProduto,
     listarProdutos,
     listarProduto,
     atualizarProduto,
-    listagemCategorias
+    listagemCategorias,
+    deletarProduto
 };
